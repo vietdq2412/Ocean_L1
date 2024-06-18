@@ -40,8 +40,17 @@ public class RestEmployeeController {
 
     @PostMapping("")
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto dto) {
+        try {
+            if (dto.getId() != null) {
+                EmployeeDto result = employeeService.saveOrUpdate(dto);
+                return new ResponseEntity<EmployeeDto>(result, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
         EmployeeDto result = employeeService.saveOrUpdate(dto);
-        return new ResponseEntity<EmployeeDto>(result, HttpStatus.OK);
+        return new ResponseEntity<EmployeeDto>(result, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/search")

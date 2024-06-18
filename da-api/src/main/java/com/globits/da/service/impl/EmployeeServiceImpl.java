@@ -6,7 +6,6 @@ import com.globits.da.dto.EmployeeDto;
 import com.globits.da.dto.search.EmployeeSearchDTO;
 import com.globits.da.repository.EmployeeRepository;
 import com.globits.da.service.EmployeeService;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,10 +22,6 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee, UUID> impl
     @Autowired
     private EmployeeRepository employeeRepository;
 
-//    @Autowired
-//    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-//        this.employeeRepository = employeeRepository;
-//    }
 
     @Override
     public EmployeeDto saveOrUpdate(EmployeeDto dto) {
@@ -34,11 +29,9 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee, UUID> impl
             Employee entity = null;
             if (dto.getId() != null) {
                 entity = employeeRepository.getOne(dto.getId());
-                entity.setModifyDate(LocalDateTime.now());
             }
             if (entity == null) {
                 entity = new Employee();
-                entity.setCreateDate(LocalDateTime.now());
             }
             entity.setCode(dto.getCode());
             entity.setName(dto.getName());
