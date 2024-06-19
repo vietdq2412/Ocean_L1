@@ -16,10 +16,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
             "WHERE " +
             "(" +
             ":keyword IS NULL " +
-            "OR e.name LIKE "+"%"+":keyword"+"% " +
-            "OR e.code LIKE "+"%"+":keyword"+"% " +
-            "OR e.email LIKE "+"%"+":keyword"+"% " +
-            "OR e.phone LIKE "+"%"+":keyword"+"% " +
+            "OR e.name LIKE " + "%" + ":keyword" + "% " +
+            "OR e.code LIKE " + "%" + ":keyword" + "% " +
+            "OR e.email LIKE " + "%" + ":keyword" + "% " +
+            "OR e.phone LIKE " + "%" + ":keyword" + "% " +
             ") " +
             "and (:age = 0 OR e.age = :age) " +
             "and (:id is NULL or e.id = :id) " +
@@ -32,6 +32,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
 
     @Query("select new com.globits.da.dto.EmployeeDto(ed) from Employee ed")
     List<EmployeeDto> findAllEmployee();
-
-
 }

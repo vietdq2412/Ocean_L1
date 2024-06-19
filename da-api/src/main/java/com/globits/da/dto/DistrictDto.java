@@ -4,24 +4,22 @@ import com.globits.core.domain.BaseObject;
 import com.globits.da.domain.District;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class DistrictDto extends BaseObject {
     private String name;
-
-    private ProvinceDto provinceDto;
-
+    private UUID provinceId;
     private List<CommuneDto> communeDtos;
 
     public DistrictDto() {
         super();
     }
-
     public DistrictDto(District entity) {
         if (entity != null) {
             this.setId(entity.getId());
             this.name = entity.getName();
-            this.provinceDto = new ProvinceDto(entity.getProvince());
+            this.provinceId = entity.getProvince().getId();
         }
     }
 
@@ -41,11 +39,19 @@ public class DistrictDto extends BaseObject {
         this.name = name;
     }
 
-    public ProvinceDto getProvince() {
-        return provinceDto;
+    public List<CommuneDto> getCommuneDtos() {
+        return communeDtos;
     }
 
-    public void setProvince(ProvinceDto provinceDto) {
-        this.provinceDto = provinceDto;
+    public void setCommuneDtos(List<CommuneDto> communeDtos) {
+        this.communeDtos = communeDtos;
+    }
+
+    public UUID getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(UUID provinceId) {
+        this.provinceId = provinceId;
     }
 }

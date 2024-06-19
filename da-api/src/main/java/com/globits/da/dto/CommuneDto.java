@@ -7,11 +7,11 @@ import com.globits.da.domain.Commune;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.util.UUID;
 
 public class CommuneDto extends BaseObjectDto {
     private String name;
-
-    private DistrictDto districtDto;
+    private UUID districtId;
 
     public CommuneDto() {
         super();
@@ -20,16 +20,16 @@ public class CommuneDto extends BaseObjectDto {
         if(entity != null) {
             this.setId(entity.getId());
             this.name = entity.getName();
-            this.districtDto = new DistrictDto(entity.getDistrict());
+            this.districtId = entity.getDistrict().getId();
         }
     }
 
-    public DistrictDto getDistrict() {
-        return districtDto;
+    public UUID getDistrictId() {
+        return districtId;
     }
 
-    public void setDistrict(DistrictDto districtDto) {
-        this.districtDto = districtDto;
+    public void setDistrictId(UUID districtId) {
+        this.districtId = districtId;
     }
 
     public String getName() {
