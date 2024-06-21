@@ -1,22 +1,37 @@
 package com.globits.da.dto;
 
 import com.globits.core.dto.BaseObjectDto;
-import com.globits.da.domain.Category;
 import com.globits.da.domain.Employee;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class EmployeeDto extends BaseObjectDto {
+    @NotBlank(message = "Code is required")
+    @Pattern(regexp = "\\S{6,10}", message = "Code must be between 6 and 10 characters and contain no spaces")
     private String code;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Email is required")
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "Invalid email format (e.g. email@email.com")
     private String email;
+
+    @NotBlank(message = "Phone number is mandatory")
+    @Pattern(regexp = "\\d{1,11}", message = "Phone number should be numeric and not longer than 11 digits")
     private String phone;
-    private int age;
+
+    @Min(value = 0, message = "Age must be > 0")
+    private Integer age;
 
     public EmployeeDto() {
         super();
     }
 
     public EmployeeDto(Employee entity) {
-        if(entity != null) {
+        if (entity != null) {
             this.setId(entity.getId());
             this.code = entity.getCode();
             this.name = entity.getName();

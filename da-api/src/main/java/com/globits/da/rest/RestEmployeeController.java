@@ -9,15 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/employee")
+@Validated
 public class RestEmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -32,7 +39,7 @@ public class RestEmployeeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto dto) {
+    public ResponseEntity<EmployeeDto> save(@Valid @RequestBody EmployeeDto dto) {
         try {
             if (dto.getId() != null) {
                 EmployeeDto result = employeeService.saveOrUpdate(dto);
@@ -43,11 +50,11 @@ public class RestEmployeeController {
 
         }
         EmployeeDto result = employeeService.saveOrUpdate(dto);
-        return new ResponseEntity<EmployeeDto>(result, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Page<EmployeeDto>> search(@RequestBody EmployeeSearchDTO searchDto) {
+    public ResponseEntity<Page<EmployeeDto>> search(@Valid @RequestBody EmployeeSearchDTO searchDto) {
         Page<EmployeeDto> result = employeeService.searchByMultipleCriteria(searchDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -71,6 +78,19 @@ public class RestEmployeeController {
 
         excelExportService.setWorkbook(new XSSFWorkbook());
         excelExportService.exportDataToExcel(listEmployees, response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("errorCode", HttpStatus.BAD_REQUEST.toString());
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }
 

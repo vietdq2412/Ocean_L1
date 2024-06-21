@@ -29,10 +29,10 @@ public class DistrictServiceImpl extends GenericServiceImpl<District, UUID> impl
     @Override
     public District update(UUID id, DistrictDto districtDto) {
         if (districtDto != null && id != null) {
-            District commune = districtRepository.findById(id).orElse(null);
-            if (commune != null) {
-                commune.setName(districtDto.getName());
-                return districtRepository.save(commune);
+            District district = districtRepository.findById(id).orElse(null);
+            if (district != null) {
+                district.setName(districtDto.getName());
+                return districtRepository.save(district);
             }
         }
         return null;

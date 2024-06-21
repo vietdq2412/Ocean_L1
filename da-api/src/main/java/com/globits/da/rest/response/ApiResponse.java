@@ -1,17 +1,16 @@
 package com.globits.da.rest.response;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+
+
 public class ApiResponse<T> {
     private T data;
-    private String errorCode;
+    private HttpStatus httpStatus;
     private String errorMessage;
 
     public ApiResponse() {
-    }
-
-    public ApiResponse(T data, String errorCode, String errorMessage) {
-        this.data = data;
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
     }
 
     public T getData() {
@@ -22,19 +21,19 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
     public String getErrorMessage() {
         return errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
+
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
     }
 }
