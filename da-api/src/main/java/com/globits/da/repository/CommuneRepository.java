@@ -13,4 +13,6 @@ import java.util.UUID;
 public interface CommuneRepository extends JpaRepository<Commune, UUID>{
     @Query("select new com.globits.da.dto.CommuneDto(ed) from Commune ed")
     List<CommuneDto> findAllCommune();
+    Boolean existsByName(String name);
+
 }

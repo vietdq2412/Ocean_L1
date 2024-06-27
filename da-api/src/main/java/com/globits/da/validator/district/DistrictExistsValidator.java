@@ -1,4 +1,4 @@
-package com.globits.da.validator;
+package com.globits.da.validator.district;
 
 import com.globits.da.repository.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;

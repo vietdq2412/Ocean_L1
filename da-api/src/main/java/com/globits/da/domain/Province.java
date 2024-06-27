@@ -1,8 +1,6 @@
 package com.globits.da.domain;
 
 import com.globits.core.domain.BaseObject;
-import lombok.Builder;
-import lombok.Data;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +12,7 @@ import java.util.List;
 public class Province extends BaseObject {
     private String name;
 
-    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL , orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<District> districts;
 
     public List<District> getDistricts() {

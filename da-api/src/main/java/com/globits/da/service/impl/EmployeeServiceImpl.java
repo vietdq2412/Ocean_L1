@@ -5,6 +5,7 @@ import com.globits.da.domain.Employee;
 import com.globits.da.dto.EmployeeDto;
 import com.globits.da.dto.search.EmployeeSearchDTO;
 import com.globits.da.repository.EmployeeRepository;
+import com.globits.da.repository.EmployeeRepository;
 import com.globits.da.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,12 @@ import java.util.UUID;
 @Service
 public class EmployeeServiceImpl extends GenericServiceImpl<Employee, UUID> implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public EmployeeDto saveOrUpdate(EmployeeDto dto) {

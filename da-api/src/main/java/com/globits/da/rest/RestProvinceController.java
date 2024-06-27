@@ -19,15 +19,18 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/api/province")
 public class RestProvinceController {
-    private static final int DEFAULT_PAGE_INDEX = 1;
-    private static final int PAGE_SIZE = 2;
-    @Autowired
-    private ProvinceServiceImpl provinceService;
+    private final ProvinceServiceImpl provinceService;
 
-    @GetMapping
-    public ResponseEntity<Page<Province>> getAllProvince() {
-        return new ResponseEntity<>(provinceService.getList(DEFAULT_PAGE_INDEX, PAGE_SIZE), HttpStatus.OK);
+    @Autowired
+    public RestProvinceController(ProvinceServiceImpl provinceService) {
+        this.provinceService = provinceService;
+    }
+
+    @GetMapping("/{pageIndex}/{pageSize}")
+    public ResponseEntity<Page<ProvinceDto>> getAllProvince(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        return new ResponseEntity<>(provinceService.findAllProvinceDto(pageIndex, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

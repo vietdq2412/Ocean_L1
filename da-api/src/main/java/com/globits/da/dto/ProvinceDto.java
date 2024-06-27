@@ -8,11 +8,9 @@ import java.util.List;
 
 
 public class ProvinceDto extends BaseObject {
-
     @NotBlank(message = "Name is required!")
     private String name;
-
-    private List<DistrictDto> districtDtos;
+    private List<DistrictDto> districts;
 
     public ProvinceDto() {
         super();
@@ -22,15 +20,10 @@ public class ProvinceDto extends BaseObject {
         if (entity != null) {
             this.setId(entity.getId());
             this.name = entity.getName();
+            this.setCreateDate(entity.getCreateDate());
+            this.setModifyDate(entity.getModifyDate());
+            this.setCreatedBy(entity.getCreatedBy());
         }
-    }
-
-    public List<DistrictDto> getDistricts() {
-        return districtDtos;
-    }
-
-    public void setDistricts(List<DistrictDto> districtDtos) {
-        this.districtDtos = districtDtos;
     }
 
     public String getName() {
@@ -39,5 +32,13 @@ public class ProvinceDto extends BaseObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<DistrictDto> getDistricts() {
+        return districts;
+    }
+
+    public void setDistricts(List<DistrictDto> districts) {
+        this.districts = districts;
     }
 }

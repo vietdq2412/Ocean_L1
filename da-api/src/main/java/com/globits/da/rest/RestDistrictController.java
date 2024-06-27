@@ -1,7 +1,5 @@
 package com.globits.da.rest;
 
-import com.globits.da.domain.District;
-import com.globits.da.domain.Province;
 import com.globits.da.dto.DistrictDto;
 import com.globits.da.rest.response.ApiResponse;
 import com.globits.da.service.impl.DistrictServiceImpl;
@@ -10,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,14 +16,19 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/district")
+@Validated
 public class RestDistrictController {
+    private final DistrictServiceImpl districtService;
 
     @Autowired
-    private DistrictServiceImpl districtService;
+    public RestDistrictController(DistrictServiceImpl districtService) {
+        this.districtService = districtService;
+    }
 
-    @GetMapping
-    public ResponseEntity<Page<District>> getAllDistrict() {
-        return new ResponseEntity<>(districtService.getList(1, 2), HttpStatus.OK);
+    @GetMapping("/{pageIndex}/{pageSize}")
+    public ResponseEntity<Page<DistrictDto>> getAllDistrict(@PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        Page<DistrictDto> districts = districtService.getAllDistrict(pageIndex, pageSize);
+        return new ResponseEntity<>(districts, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -42,23 +46,12 @@ public class RestDistrictController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<DistrictDto>> saveDistrict(@Valid @RequestBody DistrictDto districtDto) {
-        ApiResponse<DistrictDto> apiResponse = new ApiResponse<>();
-
-        District district = new District();
-
-        Province province = new Province();
-        province.setId(districtDto.getProvinceId());
-
-        district.setName(districtDto.getName());
-        district.setProvince(province);
-
-        apiResponse.setData(new DistrictDto(districtService.save(district)));
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return new ResponseEntity<>(districtService.save(districtDto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<District>> updateDistrict(@PathVariable("id") UUID id, DistrictDto districtDto) {
-        ApiResponse<District> apiResponse = new ApiResponse<>();
+    public ResponseEntity<ApiResponse<DistrictDto>> updateDistrict(@PathVariable("id") UUID id, @Valid @RequestBody DistrictDto districtDto) {
+        ApiResponse<DistrictDto> apiResponse = new ApiResponse<>();
         if (districtService.findOneById(id) == null) {
             apiResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
             apiResponse.setErrorMessage("Entity not found with id: " + id);

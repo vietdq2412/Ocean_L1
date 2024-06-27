@@ -3,7 +3,7 @@ package com.globits.da.rest;
 import com.globits.da.dto.EmployeeDto;
 import com.globits.da.dto.search.EmployeeSearchDTO;
 import com.globits.da.service.EmployeeService;
-import com.globits.da.service.ExcelExportService;
+import com.globits.da.service.impl.ExcelExportService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,11 +26,13 @@ import java.util.UUID;
 @RequestMapping("/api/employee")
 @Validated
 public class RestEmployeeController {
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
+    private final ExcelExportService excelExportService;
 
-    @Autowired
-    private ExcelExportService excelExportService;
+    public RestEmployeeController(EmployeeService employeeService, ExcelExportService excelExportService) {
+        this.employeeService = employeeService;
+        this.excelExportService = excelExportService;
+    }
 
     @GetMapping("")
     public ResponseEntity<List<EmployeeDto>> getAll() {

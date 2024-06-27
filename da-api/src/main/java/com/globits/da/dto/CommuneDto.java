@@ -2,7 +2,7 @@ package com.globits.da.dto;
 
 import com.globits.core.dto.BaseObjectDto;
 import com.globits.da.domain.Commune;
-import com.globits.da.validator.DistrictExists;
+import com.globits.da.validator.district.DistrictExists;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,6 +25,10 @@ public class CommuneDto extends BaseObjectDto {
             this.setId(entity.getId());
             this.name = entity.getName();
             this.districtId = entity.getDistrict().getId();
+
+            this.setCreateDate(entity.getCreateDate());
+            this.setModifyDate(entity.getModifyDate());
+            this.setCreatedBy(entity.getCreatedBy());
         }
     }
 

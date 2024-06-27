@@ -10,18 +10,20 @@ import com.globits.da.rest.response.ApiResponse;
 import com.globits.da.service.CommuneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
 public class CommuneServiceImpl extends GenericServiceImpl<Commune, UUID> implements CommuneService {
-    @Autowired
-    private CommuneRepository communeRepository;
+    private final CommuneRepository communeRepository;
+    private final DistrictRepository districtRepository;
 
     @Autowired
-    private DistrictRepository districtRepository;
+    public CommuneServiceImpl(CommuneRepository communeRepository, DistrictRepository districtRepository) {
+        this.communeRepository = communeRepository;
+        this.districtRepository = districtRepository;
+    }
 
     @Override
     public Commune findOneById(UUID id) {

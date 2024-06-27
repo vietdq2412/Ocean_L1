@@ -38,6 +38,10 @@ public class EmployeeDto extends BaseObjectDto {
             this.email = entity.getEmail();
             this.phone = entity.getPhone();
             this.age = entity.getAge();
+
+            this.setCreateDate(entity.getCreateDate());
+            this.setModifyDate(entity.getModifyDate());
+            this.setCreatedBy(entity.getCreatedBy());
         }
     }
 

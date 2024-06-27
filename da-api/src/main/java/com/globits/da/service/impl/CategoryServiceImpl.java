@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.Query;
 
+import com.globits.da.repository.DistrictRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,13 +22,17 @@ import com.globits.da.repository.CategoryRepository;
 import com.globits.da.service.CategoryService;
 @Service
 public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> implements CategoryService{
+	private final CategoryRepository categoryRepository;
+
 	@Autowired
-	CategoryRepository repos;
-	 
+	public CategoryServiceImpl(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
+	
 	@Override
 	public Page<CategoryDto> getPage(int pageSize, int pageIndex) {
 		Pageable pageable = PageRequest.of(pageIndex-1, pageSize);
-		return repos.getListPage(pageable);
+		return categoryRepository.getListPage(pageable);
 	}
 	@Override
 	public CategoryDto saveOrUpdate(UUID id, CategoryDto dto) {
@@ -37,7 +42,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 				if (dto.getId() != null && !dto.getId().equals(id)) {
 					return null;
 				}
-				entity =  repos.getOne(dto.getId());
+				entity =  categoryRepository.getOne(dto.getId());
 			}
 			if(entity == null) {
 				entity = new Category();
@@ -45,7 +50,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 			entity.setCode(dto.getCode());
 			entity.setName(dto.getName());
 			
-			entity = repos.save(entity);
+			entity = categoryRepository.save(entity);
 			if (entity != null) {
 				return new CategoryDto(entity);
 			}
@@ -56,7 +61,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 	@Override
 	public Boolean deleteKho(UUID id) {
 		if(id!=null) {
-			repos.deleteById(id);
+			categoryRepository.deleteById(id);
 			return true;
 		}
 		return false;
@@ -64,7 +69,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 
 	@Override
 	public CategoryDto getCertificate(UUID id) {
-		Category entity = repos.getOne(id);
+		Category entity = categoryRepository.getOne(id);
 		if(entity!=null) {
 			return new CategoryDto(entity);
 		}
@@ -122,7 +127,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 	@Override
 	public Boolean checkCode(UUID id, String code) {
 		if(code != null && StringUtils.hasText(code)) {
-			Long count = repos.checkCode(code,id);
+			Long count = categoryRepository.checkCode(code,id);
 				return count != 0l;
 			}
 		return null;
@@ -135,7 +140,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, UUID> impl
 	}
 	@Override
 	public List<CategoryDto> getAllCategory() {
-		List<CategoryDto> listCategory = repos.getAllCategory();
+		List<CategoryDto> listCategory = categoryRepository.getAllCategory();
 		return listCategory;
 	}
 	 

@@ -9,26 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/api/commune")
+@Validated
 public class RestCommuneController {
-    @Autowired
-    private CommuneServiceImpl communeService;
+    private final CommuneServiceImpl communeService;
+    private final DistrictServiceImpl districtService;
 
     @Autowired
-    private DistrictServiceImpl districtService;
+    public RestCommuneController(CommuneServiceImpl communeService, DistrictServiceImpl districtService) {
+        this.communeService = communeService;
+        this.districtService = districtService;
+    }
 
     @GetMapping
     public ResponseEntity<Page<Commune>> getAllCommune() {
@@ -80,23 +79,5 @@ public class RestCommuneController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("errorCode", HttpStatus.BAD_REQUEST.toString());
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
 
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        return new ResponseEntity<>("Invalid JSON request" + ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }
