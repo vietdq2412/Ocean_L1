@@ -20,9 +20,11 @@ public class District extends BaseObject {
     }
 
     public void setCommunes(List<Commune> communes) {
-        if (communes != null) {
+        if (communes != null && this.communes != null ) {
             this.communes.clear();
             this.communes.addAll(communes);
+        }else {
+            this.communes = communes;
         }
     }
 

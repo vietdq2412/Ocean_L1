@@ -47,8 +47,8 @@ public class RestProvinceController {
     }
 
     @PostMapping
-    public ResponseEntity<Province> saveProvince(@Valid @RequestBody Province province) {
-        return new ResponseEntity<>(provinceService.save(province), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<ProvinceDto>> saveProvince(@Valid @RequestBody ProvinceDto provinceDto) {
+        return new ResponseEntity<>(provinceService.save(provinceDto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -89,4 +89,6 @@ public class RestProvinceController {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+
 }

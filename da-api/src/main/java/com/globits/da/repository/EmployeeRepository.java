@@ -25,7 +25,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
             "and (:id is NULL or e.id = :id) " +
             "ORDER BY e.createDate DESC "
     )
-    public List<EmployeeDto> search(@Param("keyword") String keyword,
+    List<EmployeeDto> search(@Param("keyword") String keyword,
                                     @Param("age") int age,
                                     @Param("id") UUID id
     );

@@ -1,10 +1,14 @@
 package com.globits.da.domain;
 
 import com.globits.core.domain.BaseObject;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -27,6 +31,18 @@ public class Employee extends BaseObject {
 
     @Min(value = 0, message = "Age must be > 0")
     private Integer age;
+
+    @NotNull(message = "Commune is required")
+    @ManyToOne
+    private Commune commune;
+
+    @NotNull(message = "District is required")
+    @ManyToOne
+    private District district;
+
+    @NotNull(message = "Province is required")
+    @ManyToOne
+    private Province province;
 
     public String getCode() {
         return code;
@@ -66,5 +82,33 @@ public class Employee extends BaseObject {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setAge(@Min(value = 0, message = "Age must be > 0") Integer age) {
+        this.age = age;
+    }
+
+    public Commune getCommune() {
+        return commune;
+    }
+
+    public void setCommune(Commune commune) {
+        this.commune = commune;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
     }
 }
