@@ -2,6 +2,7 @@ package com.globits.da.rest;
 
 import com.globits.da.dto.EmployeeDto;
 import com.globits.da.dto.search.EmployeeSearchDTO;
+import com.globits.da.rest.response.ApiResponse;
 import com.globits.da.service.EmployeeService;
 import com.globits.da.service.impl.ExcelExportService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,18 +42,19 @@ public class RestEmployeeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<EmployeeDto> save(@Valid @RequestBody EmployeeDto dto) {
+    public ResponseEntity<ApiResponse<EmployeeDto>> save(@Valid @RequestBody EmployeeDto dto) {
+        ApiResponse<EmployeeDto> apiResponse = new ApiResponse<>();
         try {
             if (dto.getId() != null) {
-                EmployeeDto result = employeeService.saveOrUpdate(dto);
-                return new ResponseEntity<EmployeeDto>(result, HttpStatus.OK);
+                apiResponse = employeeService.saveOrUpdate(dto);
+                return new ResponseEntity<>(apiResponse, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();
 
         }
-        EmployeeDto result = employeeService.saveOrUpdate(dto);
-        return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        apiResponse = employeeService.saveOrUpdate(dto);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/search")

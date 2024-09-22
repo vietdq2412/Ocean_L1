@@ -2,10 +2,15 @@ package com.globits.da.dto;
 
 import com.globits.core.dto.BaseObjectDto;
 import com.globits.da.domain.Employee;
+import com.globits.da.validator.district.DistrictExists;
+import com.globits.da.validator.province.ProvinceExists;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 public class EmployeeDto extends BaseObjectDto {
     @NotBlank(message = "Code is required")
@@ -23,8 +28,20 @@ public class EmployeeDto extends BaseObjectDto {
     @Pattern(regexp = "\\d{1,11}", message = "Phone number should be numeric and not longer than 11 digits")
     private String phone;
 
+    @NotNull(message = "Age is required")
     @Min(value = 0, message = "Age must be > 0")
     private Integer age;
+
+    @NotNull(message = "communeId is required")
+    private UUID communeId;
+
+    @NotNull(message = "districtId is required")
+    @DistrictExists
+    private UUID districtId;
+
+    @NotNull(message = "provinceId is required")
+    @ProvinceExists
+    private UUID provinceId;
 
     public EmployeeDto() {
         super();
@@ -38,6 +55,10 @@ public class EmployeeDto extends BaseObjectDto {
             this.email = entity.getEmail();
             this.phone = entity.getPhone();
             this.age = entity.getAge();
+
+            this.communeId = entity.getCommune().getId();
+            this.districtId = entity.getDistrict().getId();
+            this.provinceId = entity.getProvince().getId();
 
             this.setCreateDate(entity.getCreateDate());
             this.setModifyDate(entity.getModifyDate());
@@ -83,5 +104,33 @@ public class EmployeeDto extends BaseObjectDto {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public UUID getCommuneId() {
+        return communeId;
+    }
+
+    public void setCommuneId(UUID communeId) {
+        this.communeId = communeId;
+    }
+
+    public UUID getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(UUID districtId) {
+        this.districtId = districtId;
+    }
+
+    public UUID getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(UUID provinceId) {
+        this.provinceId = provinceId;
     }
 }

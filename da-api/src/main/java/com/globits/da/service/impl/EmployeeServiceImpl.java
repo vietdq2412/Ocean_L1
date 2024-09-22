@@ -1,11 +1,15 @@
 package com.globits.da.service.impl;
 
 import com.globits.core.service.impl.GenericServiceImpl;
+import com.globits.da.domain.Commune;
+import com.globits.da.domain.District;
 import com.globits.da.domain.Employee;
+import com.globits.da.domain.Province;
 import com.globits.da.dto.EmployeeDto;
 import com.globits.da.dto.search.EmployeeSearchDTO;
 import com.globits.da.repository.EmployeeRepository;
 import com.globits.da.repository.EmployeeRepository;
+import com.globits.da.rest.response.ApiResponse;
 import com.globits.da.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +32,9 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee, UUID> impl
     }
 
     @Override
-    public EmployeeDto saveOrUpdate(EmployeeDto dto) {
+    public ApiResponse<EmployeeDto> saveOrUpdate(EmployeeDto dto) {
+        ApiResponse<EmployeeDto> apiResponse = new ApiResponse<>();
+
         if (dto != null) {
             Employee entity = null;
             if (dto.getId() != null) {
@@ -43,10 +49,22 @@ public class EmployeeServiceImpl extends GenericServiceImpl<Employee, UUID> impl
             entity.setPhone(dto.getPhone());
             entity.setEmail(dto.getEmail());
 
+            Commune commune = new Commune();
+            District district = new District();
+            Province province = new Province();
+
+            commune.setId(dto.getCommuneId());
+            district.setId(dto.getDistrictId());
+            province.setId(dto.getProvinceId());
+
+            entity.setCommune(commune);
+            entity.setDistrict(district);
+            entity.setProvince(province);
+
             entity = employeeRepository.save(entity);
-            return new EmployeeDto(entity);
+            apiResponse.setData(new EmployeeDto(entity));
         }
-        return null;
+        return apiResponse;
     }
 
     @Override
