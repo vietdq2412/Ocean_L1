@@ -55,7 +55,6 @@ public class DistrictServiceImpl extends GenericServiceImpl<District, UUID> impl
                 return new DistrictDto(districtRepository.save(district));
             }
         }
-        return null;
     }
 
     @Override
