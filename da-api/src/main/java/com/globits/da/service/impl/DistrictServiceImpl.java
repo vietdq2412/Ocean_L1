@@ -49,23 +49,7 @@ public class DistrictServiceImpl extends GenericServiceImpl<District, UUID> impl
     @Override
     public DistrictDto update(UUID id, DistrictDto districtDto) {
 
-        District district = districtRepository.findById(id).orElse(null);
-        if (district != null) {
-            district.setName(districtDto.getName());
 
-            if (districtDto.getCommuneDtos() != null) {
-                List<Commune> communes = new ArrayList<>();
-                for (CommuneDto communeDto : districtDto.getCommuneDtos()) {
-                    Commune commune = new Commune();
-                    commune.setName(communeDto.getName());
-                    commune.setDistrict(district);
-                    communes.add(commune);
-                }
-                district.setCommunes(communes);
-            }
-
-            return new DistrictDto(districtRepository.save(district));
-        }
         return null;
     }
 
