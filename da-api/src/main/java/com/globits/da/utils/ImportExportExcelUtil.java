@@ -22,7 +22,6 @@ import com.globits.core.dto.DepartmentDto;
 public class ImportExportExcelUtil {
 	private static Hashtable<String, Integer> hashStaffColumnConfig = new Hashtable<String, Integer>();
 	private static Hashtable<String, Integer> hashDepartmentColumnConfig = new Hashtable<String, Integer>();
-	private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private static DecimalFormat numberFormatter = new DecimalFormat("######################");
 	private static Hashtable<String, String> hashColumnPropertyConfig = new Hashtable<String, String>();
 	
